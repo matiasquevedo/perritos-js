@@ -17,6 +17,7 @@ class HostelSchema extends Schema {
       table.string('locality').nullable()
       table.string('subAdministrativeArea').nullable()
       table.integer('user_id').unsigned().references('id').inTable('users')
+      table.integer('type_id').unsigned().references('id').inTable('hostel_types')
       table.timestamps()
     })
   }

@@ -1,0 +1,21 @@
+@layout('admin.layouts.app')
+
+@section('title')
+Refugios
+@endsection
+
+@section('content')
+<div class="container p-3 bg-white border rounded">
+	<h3>Refugios
+		<a class="btn btn-primary" href="{{route('hostel.create')}}" >Nuevo</a>
+	</h3>
+	<a href="{{route('types.index')}}">Tipos de Refugio</a>
+	{{hostels}}
+
+	@each(hostel in hostels)
+	    <li> {{ hostel.name }} </li>
+	@else
+	  	<p>No hay refugios</p>
+	@endeach
+</div>
+@endsection

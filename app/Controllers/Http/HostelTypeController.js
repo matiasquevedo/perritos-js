@@ -7,6 +7,9 @@
 /**
  * Resourceful controller for interacting with hosteltypes
  */
+
+const HostelType = use('App/Models/HostelType')
+
 class HostelTypeController {
   /**
    * Show a list of all hosteltypes.
@@ -18,6 +21,11 @@ class HostelTypeController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    const types = await HostelType.all()
+    // console.log(hostels)
+    return view.render('admin.hostel.types.index',{
+      types: types.rows
+    })
   }
 
   /**
@@ -30,6 +38,7 @@ class HostelTypeController {
    * @param {View} ctx.view
    */
   async create ({ request, response, view }) {
+    return view.render('admin.hostel.types.create')
   }
 
   /**
@@ -41,6 +50,9 @@ class HostelTypeController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+    // console.log(request.all())
+    const type = await HostelType.create(request.only(['name','description']))
+    return response.route('types.index')
   }
 
   /**

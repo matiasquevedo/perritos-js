@@ -7,6 +7,9 @@
 /**
  * Resourceful controller for interacting with hostels
  */
+
+const Hostel = use('App/Models/Hostel')
+
 class HostelController {
   /**
    * Show a list of all hostels.
@@ -18,6 +21,11 @@ class HostelController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    const hostels = await Hostel.all()
+    // console.log(hostels)
+    return view.render('admin.hostel.index',{
+      hostels: hostels.rows
+    })
   }
 
   /**
@@ -41,6 +49,7 @@ class HostelController {
    * @param {Response} ctx.response
    */
   async store ({ request, response }) {
+    console.log(request.all())
   }
 
   /**

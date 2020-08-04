@@ -1,0 +1,38 @@
+@layout('admin.layouts.app')
+
+@section('title')
+Tipos Refugios
+@endsection
+
+@section('content')
+<div class="container p-3 bg-white border rounded">
+	<h3>Tipos Refugios
+		<a class="btn btn-primary" href="{{route('types.create')}}" >Nuevo</a>
+	</h3>
+
+	<table class="table table-striped">
+	  <thead>
+	    <tr>
+	      <th scope="col">Name</th>
+	      <th scope="col">Descripción</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	  	@each(type in types)
+	  	    <tr>
+	  	      <td>{{ type.name.lowerFirst }}</td>
+	  	      <td>{{ type.description }}</td>
+	  	    </tr>
+	  	@else
+	  		<tr>
+	  			<td>No hay refugios</td>
+	  			<td></td>
+	  		</tr>
+	  	@endeach
+	    
+	  </tbody>
+	</table>
+
+	
+</div>
+@endsection

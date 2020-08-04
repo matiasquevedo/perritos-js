@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title> 
+    @!section('title') 
+    | Administrador PerritOS
+  </title>
+    <script src="{{ assetsUrl('js/app.js') }}" defer></script>
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link href="{{ assetsUrl('css/app.css') }}" rel="stylesheet">
+</head>
+<body style="background-color: #f4f5f6 !important;">
+
+  <div class="wrapper">
+      <!-- Sidebar  -->
+      @include('admin.layouts.side')      
+
+      <!-- Page Content  -->
+      <div id="content">
+
+          {{-- nav content --}}
+
+          @include('admin.layouts.nav')
+
+          {{-- /nav content --}}
+
+          {{-- content --}}
+          <main class="container-fluid py-1 px-2 my-3" >
+              <div id='app'>
+                  @!section('content')
+              </div>
+          </main>
+
+          {{-- /content --}}
+
+          
+      </div>
+  </div>
+  <script>
+      window.addEventListener('load', function() {
+          $(document).ready(function () {
+              $('#sidebarCollapse').on('click', function () {
+                  $('#sidebar').toggleClass('active');
+              });
+          });
+
+      })
+      
+  </script>
+</body>
+</html>

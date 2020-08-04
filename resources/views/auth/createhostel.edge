@@ -1,0 +1,46 @@
+@layout('layouts.app')
+
+@section('title')
+Inscribir Mi Refugio
+@endsection
+
+@section('content')
+<div class="container">
+  <h2>Inscribir Mi Refugio</h2>
+  @if(old('notification'))
+    <div class="alert alert-danger">
+      {{ old('notification') }}
+    </div>
+  @endif
+  
+  <form action="{{route('hostel.store')}}" method="POST">
+    {{ csrfField() }}
+
+    <div class="form-group">
+      <label for="">Nombre</label>
+      <input type="text" name="name" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="">email</label>
+      <input type="text" name="email" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="">description</label>
+      <textarea name="description" id="" cols="30" rows="5" class="form-control"></textarea>
+    </div>
+
+    <input type="submit" value="Registrar" class="btn btn-primary">
+  </form>
+</div>
+@endsection
+
+name
+
+
+adress
+latitude
+longitude
+locality
+subAdministrativeArea

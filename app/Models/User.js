@@ -21,6 +21,17 @@ class User extends Model {
     })
   }
 
+  static get traits () {
+      return [
+        '@provider:Adonis/Acl/HasRole',
+        '@provider:Adonis/Acl/HasPermission'
+      ]
+    }
+
+  static get hidden () {
+    return ['password']
+  }
+
   /**
    * A relationship on tokens is required for auth to
    * work. Since features like `refreshTokens` or
@@ -33,6 +44,10 @@ class User extends Model {
    */
   tokens () {
     return this.hasMany('App/Models/Token')
+  }
+
+  Hostel () {
+    return this.hasOne('App/Models/Hostel')
   }
 }
 

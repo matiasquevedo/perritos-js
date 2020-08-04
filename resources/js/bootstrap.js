@@ -4,3 +4,5 @@ try {
 
     require('bootstrap');
 } catch (e) {}
+
+window.fontawesome = require('@fortawesome/fontawesome-free');

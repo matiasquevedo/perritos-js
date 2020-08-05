@@ -1,0 +1,40 @@
+@layout('admin.layouts.app')
+
+@section('title')
+Categorias
+@endsection
+
+@section('content')
+<div class="container p-3 bg-white border rounded">
+	<h3>Categorias
+		<a class="btn btn-primary" href="{{route('category.create')}}" >Nuevo</a>
+	</h3>
+	
+
+	<table class="table table-striped">
+	  <thead>
+	    <tr>
+	      <th scope="col">Categoria</th>
+	      <th scope="col"> Acción</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	  	@each(category in categories)
+	  	    <tr>
+	  	      <td><a href="{{route('category.show',{id: category.slug})}}">{{ category.name }}</a></td>
+	  	      <td>
+	  	      	<a href="{{route('category.delete',{id: category.slug})}}">Eliminar</a>
+	  	      	<a href="{{route('category.edit',{id: category.slug})}}">Editar</a>
+	  	      </td>
+	  	    </tr>
+	  	@else
+	  		<tr>
+	  			<td>No hay Categorias</td>
+	  			<td></td>
+	  		</tr>
+	  	@endeach
+	    
+	  </tbody>
+	</table>
+</div>
+@endsection

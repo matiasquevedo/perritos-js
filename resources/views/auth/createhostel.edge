@@ -6,14 +6,8 @@ Inscribir Mi Refugio
 
 @section('content')
 <div class="container">
-  <h2>Inscribir Mi Refugio</h2>
-  @if(old('notification'))
-    <div class="alert alert-danger">
-      {{ old('notification') }}
-    </div>
-  @endif
-  
-  <form action="{{route('hostel.store')}}" method="POST">
+  <h3>Inscribir Mi Refugio</h3>
+  <form action="{{route('store.refugio')}}" method="POST">
     {{ csrfField() }}
 
     <div class="form-group">
@@ -22,25 +16,139 @@ Inscribir Mi Refugio
     </div>
 
     <div class="form-group">
-      <label for="">email</label>
-      <input type="text" name="email" class="form-control">
+      <label for="">Email Institucional</label>
+      <input type="email" name="email" class="form-control">
     </div>
 
     <div class="form-group">
-      <label for="">description</label>
-      <textarea name="description" id="" cols="30" rows="5" class="form-control"></textarea>
+      <label for="type">Tipo de Refugio</label>
+      <select name="type_id" id="" class="form-control select-category">
+        <option value="" selected disabled>Seleccione un tipo de refugio</option>
+        @each(type in types)
+            <option value="{{type.id}}">{{type.name}}</option>
+        @else
+          <option value="" selected disabled>No hay tipos de refugios</option>
+        @endeach
+      </select>
     </div>
 
-    <input type="submit" value="Registrar" class="btn btn-primary">
+    <div class="form-group">
+      <label for="">Descripcion</label>
+      <textarea name="description" id="" cols="30" rows="3" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group d-none">
+      <input type="text" name="locality" class="form-control" id="local">
+      <input type="text" name="subAdministrativeArea" class="form-control" id="area">
+      <input type="text" name="latitude" class="form-control" id="latitude">
+      <input type="text" name="longitude" class="form-control" id="longitude">
+    </div>
+
+    <div class="form-group">
+      <label for="adress">Dirección</label>
+      <p><i>El sistema suguiere una dirección, verifíquela...</i></p>     
+      <input type="text" name="adress" class="form-control" id="direccion">
+    </div>
+
+    <div class="my-3">      
+      <div id="map" style="width: full; height: 300px;">
+    </div>
+
+
+    <input type="submit" value="Crear" class="btn btn-primary">
   </form>
 </div>
 @endsection
 
-name
+@section('js')
+<script type="text/javascript">
+  window.addEventListener('load', function() {
+    $('.select-category').chosen({
+      placeholder_text_multiple:'Seleccione al menos 3 tags',
+      no_results_text: "Oops, no hay tipo de refugio parecido a ",
+      search_contains:true,
+
+    });
+
+    $('.select-user').chosen({
+      placeholder_text_multiple:'Seleccione al menos 3 tags',
+      no_results_text: "Oops, no hay usuario parecido a ",
+      search_contains:true,
+
+    });
 
 
-adress
-latitude
-longitude
-locality
-subAdministrativeArea
+
+    var mymap = L.map('map').setView([-34.618669,-68.339767], 13);
+    // mymap.addControl(new L.Control.Fullscreen());
+    var address;
+
+
+    /* USANDO MAPBOX*/
+    
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 25,
+        id: 'mapbox.streets',
+        accessToken: 'pk.eyJ1IjoibWF0aWFzcXVldmVkbyIsImEiOiJjazFwaW5kMHAwMWx3M2NrNDhrOXFkeTg0In0.6iha-fBESxiMBBV_mnPnOg'
+    }).addTo(mymap);
+    // var geocoder = L.Control.geocoder().addTo(mymap);
+
+
+
+    /*  USANDO OPENSTREETMAP        
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(mymap);
+    /* */
+
+    mymap.on('click', onMapClick);
+    var popup = L.popup();
+    var marker = L.marker();
+
+
+
+    var circle = L.circle([-34.618669, -68.339767], {
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.1,
+        radius: 50
+    }).addTo(mymap);
+    var polygon = L.polygon([
+        [-34.618669, -68.339767],
+        [-34.618669, -68.339767],
+        [-34.618669, -68.339767]
+    ]).addTo(mymap);
+
+    function onMapClick(e) {
+        lat=e.latlng['lat'];
+        long=e.latlng['lng'];
+        marker.setLatLng(e.latlng).addTo(mymap);
+        popup.setLatLng(e.latlng).setContent("Agregar refugio en: " + e.latlng.toString());
+        marker.bindPopup(popup).openPopup();
+        console.clear();
+        console.log(lat,long);
+        $('#latitude').val(lat);
+        $('#longitude').val(long);
+        $.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+lat+'&lon='+long, function(data){
+            address = data
+            console.log(data);
+            if(address.address.house_number){
+                $('#direccion').val(address.address.road + ' ' + address.address.house_number);
+            }else{
+                $('#direccion').val(address.address.road + ' /(Sin Número)');
+            }
+            
+            if(address.address.city){
+                $('#local').val(address.address.city);
+            }
+            $('#area').val(address.address.city);   
+        });
+        
+
+    }     
+      
+
+  })
+</script>
+@endsection

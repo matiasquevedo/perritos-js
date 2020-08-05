@@ -11,6 +11,7 @@ class HomeController {
 			return view.render('admin.index')
 		}else if(await user.getRoles() == 'voluntario'){
 			console.log('voluntario')
+			return view.render('voluntary.index')
 
 		}
 

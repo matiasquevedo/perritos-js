@@ -1,0 +1,22 @@
+@layout('admin.layouts.app')
+
+@section('title')
+Editar Estado de Esterilización: {{sterilization.name}}
+@endsection
+
+@section('content')
+<div class="container p-3 bg-white border rounded">
+	<h3>Editar Estado de Esterilización: {{sterilization.name}}</h3>
+	<form action="{{route('sterilization.update',{id:sterilization.slug})}}" method="PUT">
+	  {{ csrfField() }}
+
+	  <div class="form-group">
+	    <label for="">Nombre</label>
+	    <input type="text" name="name" value="{{sterilization.name}}" class="form-control">
+	  </div>
+
+	  <input type="submit" value="Editar" class="btn btn-primary">
+	</form>
+</div>
+@endsection
+

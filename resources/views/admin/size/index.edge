@@ -1,0 +1,40 @@
+@layout('admin.layouts.app')
+
+@section('title')
+Tamaños
+@endsection
+
+@section('content')
+<div class="container p-3 bg-white border rounded">
+	<h3>Tamaños
+		<a class="btn btn-primary" href="{{route('size.create')}}" >Nuevo</a>
+	</h3>
+	
+
+	<table class="table table-striped">
+	  <thead>
+	    <tr>
+	      <th scope="col">Tamaño</th>
+	      <th scope="col"> Acción</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	  	@each(size in sizes)
+	  	    <tr>
+	  	      <td><a href="{{route('size.show',{id: size.slug})}}">{{ size.name }}</a></td>
+	  	      <td>
+	  	      	<a href="{{route('size.delete',{id: size.slug})}}">Eliminar</a>
+	  	      	<a href="{{route('size.edit',{id: size.slug})}}">Editar</a>
+	  	      </td>
+	  	    </tr>
+	  	@else
+	  		<tr>
+	  			<td>No hay tamaños</td>
+	  			<td></td>
+	  		</tr>
+	  	@endeach
+	    
+	  </tbody>
+	</table>
+</div>
+@endsection

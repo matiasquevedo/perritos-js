@@ -7,6 +7,9 @@
 /**
  * Resourceful controller for interacting with states
  */
+
+const State = use('App/Models/State')
+
 class StateController {
   /**
    * Show a list of all states.
@@ -18,6 +21,8 @@ class StateController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    const states = await State.all()
+    return view.render('admin.state.index',{states:states.rows})
   }
 
   /**
@@ -30,6 +35,7 @@ class StateController {
    * @param {View} ctx.view
    */
   async create ({ request, response, view }) {
+    return view.render('admin.state.create')
   }
 
   /**
@@ -40,7 +46,11 @@ class StateController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  async store ({ request, response, session }) {
+    const state = await State.create(request.only('name'))
+    session.flash({notification:'Se ha creado el estado '+state.name})
+    return response.route('state.index')
+
   }
 
   /**
@@ -53,6 +63,8 @@ class StateController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    const state = await State.findBy('slug',params.id)
+    return view.render('admin.state.show',{state:state})
   }
 
   /**
@@ -65,6 +77,8 @@ class StateController {
    * @param {View} ctx.view
    */
   async edit ({ params, request, response, view }) {
+    const state = await State.findBy('slug',params.id)
+    return view.render('admin.state.edit',{state:state})
   }
 
   /**
@@ -86,7 +100,11 @@ class StateController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {
+  async destroy ({ params, request, response,session }) {
+    const state = await State.findBy('slug',params.id)
+    await state.delete()
+    session.flash({notification:'Se ha eliminado el estado '+state.name})
+    return response.route('state.index')
   }
 }
 

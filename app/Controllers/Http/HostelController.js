@@ -9,6 +9,8 @@
  */
 
 const Hostel = use('App/Models/Hostel')
+const HostelType = use('App/Models/HostelType')
+const User = use('App/Models/User')
 
 class HostelController {
   /**
@@ -21,10 +23,13 @@ class HostelController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
-    const hostels = await Hostel.all()
+    const hostels = await Hostel.query()
+            .with('type')
+            .with('user')
+            .fetch()
     // console.log(hostels)
     return view.render('admin.hostel.index',{
-      hostels: hostels.rows
+      hostels: hostels.toJSON()
     })
   }
 
@@ -38,6 +43,12 @@ class HostelController {
    * @param {View} ctx.view
    */
   async create ({ request, response, view }) {
+    const types = await HostelType.all()
+    const users = await User.all()
+    return view.render('admin.hostel.create',{
+      types:types.rows,
+      users:users.rows
+    })
   }
 
   /**
@@ -48,10 +59,14 @@ class HostelController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  async store ({ request, response, session }) {
     console.log(request.all())
+    const type = await Hostel.create(request.only(['name','email','type_id','user_id','description','locality','subAdministrativeArea','latitude','longitude','adress']))
+    session.flash({ notification: 'Se ha creado el refugio con exito' })
+    return response.route('hostel.index')
   }
 
+  
   /**
    * Display a single hostel.
    * GET hostels/:id

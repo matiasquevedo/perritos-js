@@ -1,0 +1,22 @@
+@layout('admin.layouts.app')
+
+@section('title')
+Editar Categoria {{category.name}}
+@endsection
+
+@section('content')
+<div class="container p-3 bg-white border rounded">
+	<h3>Editar Categoria {{category.name}}</h3>
+	<form action="{{route('category.update',{id:category.slug})}}" method="PUT">
+	  {{ csrfField() }}
+
+	  <div class="form-group">
+	    <label for="">Nombre</label>
+	    <input type="text" name="name" class="form-control" value="{{category.name}}">
+	  </div>
+
+	  <input type="submit" value="Crear" class="btn btn-primary">
+	</form>
+</div>
+@endsection
+

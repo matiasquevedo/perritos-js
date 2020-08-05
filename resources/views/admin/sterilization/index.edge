@@ -1,0 +1,40 @@
+@layout('admin.layouts.app')
+
+@section('title')
+Esterilización
+@endsection
+
+@section('content')
+<div class="container p-3 bg-white border rounded">
+	<h3>Esterilización
+		<a class="btn btn-primary" href="{{route('sterilization.create')}}" >Nuevo</a>
+	</h3>
+	
+
+	<table class="table table-striped">
+	  <thead>
+	    <tr>
+	      <th scope="col">Estado</th>
+	      <th scope="col"> Acción</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	  	@each(sterilization in sterilizations)
+	  	    <tr>
+	  	      <td><a href="{{route('sterilization.show',{id: sterilization.slug})}}">{{ sterilization.name }}</a></td>
+	  	      <td>
+	  	      	<a href="{{route('sterilization.delete',{id: sterilization.slug})}}">Eliminar</a>
+	  	      	<a href="{{route('sterilization.edit',{id: sterilization.slug})}}">Editar</a>
+	  	      </td>
+	  	    </tr>
+	  	@else
+	  		<tr>
+	  			<td>No hay estados</td>
+	  			<td></td>
+	  		</tr>
+	  	@endeach
+	    
+	  </tbody>
+	</table>
+</div>
+@endsection

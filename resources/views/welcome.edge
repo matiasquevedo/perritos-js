@@ -11,8 +11,9 @@ Home
   @loggedIn
     <h2> Hello  {{ auth.user.name }}</h2>
       @is('administrador')
-        <h2>Protected partial</h2>
+        <h2>Administrador</h2>
       @endis
+    <a href="{{route('nuevo.refugio')}}" class="btn btn-info">Registrar un Refugio</a>  
   @else
     <p> Please login </p>
   	<a href="{{route('loginForm')}}" class="btn btn-info">Iniciar Sesion</a>

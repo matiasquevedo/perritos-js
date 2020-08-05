@@ -1,0 +1,40 @@
+@layout('admin.layouts.app')
+
+@section('title')
+Estados
+@endsection
+
+@section('content')
+<div class="container p-3 bg-white border rounded">
+	<h3>Estados
+		<a class="btn btn-primary" href="{{route('state.create')}}" >Nuevo</a>
+	</h3>
+	
+
+	<table class="table table-striped">
+	  <thead>
+	    <tr>
+	      <th scope="col">Categoria</th>
+	      <th scope="col"> Acción</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	  	@each(state in states)
+	  	    <tr>
+	  	      <td><a href="{{route('state.show',{id: state.slug})}}">{{ state.name }}</a></td>
+	  	      <td>
+	  	      	<a href="{{route('state.delete',{id: state.slug})}}">Eliminar</a>
+	  	      	<a href="{{route('state.edit',{id: state.slug})}}">Editar</a>
+	  	      </td>
+	  	    </tr>
+	  	@else
+	  		<tr>
+	  			<td>No hay Estados</td>
+	  			<td></td>
+	  		</tr>
+	  	@endeach
+	    
+	  </tbody>
+	</table>
+</div>
+@endsection

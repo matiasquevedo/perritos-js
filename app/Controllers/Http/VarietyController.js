@@ -7,6 +7,10 @@
 /**
  * Resourceful controller for interacting with varieties
  */
+
+const Variety = use('App/Models/Variety') 
+const Category = use('App/Models/Category')
+
 class VarietyController {
   /**
    * Show a list of all varieties.
@@ -18,6 +22,8 @@ class VarietyController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    const varieties = await Variety.all()
+    return view.render('admin.variety.index',{varieties:varieties.rows})
   }
 
   /**
@@ -29,7 +35,18 @@ class VarietyController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async create ({ request, response, view }) {
+  async create ({ request, response, view, session }) {
+    const categories = await Category.all()
+    console.log(categories)
+    if(categories){
+      return view.render('admin.variety.create',{
+        categories:categories.rows
+      })
+    }else{
+      session.flash({ notification: 'No hay categorias '})
+      return response.route('variety.index')
+    }
+    
   }
 
   /**
@@ -40,7 +57,10 @@ class VarietyController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  async store ({ request, response, session }) {
+    const variety = await Variety.create(request.only(['name','category_id']))
+    session.flash({ notification: 'Se ha creado la categoria '+variety.name })
+    return response.route('variety.index')
   }
 
   /**
@@ -53,6 +73,10 @@ class VarietyController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    console.log(params.id)
+    const variety = await Variety.findBy('slug',params.id)
+    console.log(variety)
+    return view.render('admin.variety.show',{variety:variety})
   }
 
   /**
@@ -65,6 +89,18 @@ class VarietyController {
    * @param {View} ctx.view
    */
   async edit ({ params, request, response, view }) {
+    const categories = await Category.all()
+    const variety = await Variety.findBy('slug',params.id)
+    console.log(categories)
+    if(categories){
+      return view.render('admin.variety.edit',{
+        categories:categories.rows,
+        variety:variety
+      })
+    }else{
+      session.flash({ notification: 'No hay categorias '})
+      return response.route('variety.index')
+    }
   }
 
   /**
@@ -86,7 +122,11 @@ class VarietyController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {
+  async destroy ({ params, request, response, session }) {
+    const variety = await Variety.findBy('slug',params.id)
+    await variety.delete()
+    session.flash({ notification: 'Se ha eliminado la variedad '+variety.name })
+    return response.route('variety.index')
   }
 }
 

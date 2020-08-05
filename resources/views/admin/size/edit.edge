@@ -1,0 +1,22 @@
+@layout('admin.layouts.app')
+
+@section('title')
+Editar {{size.name}}
+@endsection
+
+@section('content')
+<div class="container p-3 bg-white border rounded">
+	<h3>Editar {{size.name}}</h3>
+	<form action="{{route('size.update',{id:size.slug})}}" method="PUT">
+	  {{ csrfField() }}
+
+	  <div class="form-group">
+	    <label for="">Nombre</label>
+	    <input type="text" name="name" value="{{size.name}}" class="form-control">
+	  </div>
+
+	  <input type="submit" value="Editar" class="btn btn-primary">
+	</form>
+</div>
+@endsection
+

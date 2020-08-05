@@ -7,6 +7,8 @@
 /**
  * Resourceful controller for interacting with sizes
  */
+
+ const Size = use('App/Models/Size')
 class SizeController {
   /**
    * Show a list of all sizes.
@@ -18,6 +20,10 @@ class SizeController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    const sizes = await Size.all()
+    return view.render('admin.size.index',{
+      sizes:sizes.rows
+    })
   }
 
   /**
@@ -30,6 +36,7 @@ class SizeController {
    * @param {View} ctx.view
    */
   async create ({ request, response, view }) {
+    return view.render('admin.size.create')
   }
 
   /**
@@ -40,7 +47,10 @@ class SizeController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  async store ({ request, response, session}) {
+    const size = await Size.create(request.only(['name']))
+    session.flash({ notification: 'Se ha creado un nuevo tamaño '+size.name })
+    return response.route('size.index')
   }
 
   /**
@@ -53,6 +63,10 @@ class SizeController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    console.log(params.id)
+    const size = await Size.findBy('slug',params.id)
+    console.log(size)
+    return view.render('admin.size.show',{size:size})
   }
 
   /**
@@ -65,6 +79,9 @@ class SizeController {
    * @param {View} ctx.view
    */
   async edit ({ params, request, response, view }) {
+    const size = await Size.findBy('slug',params.id)
+    console.log(size)
+    return view.render('admin.size.edit',{size:size})
   }
 
   /**
@@ -75,7 +92,12 @@ class SizeController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {
+  async update ({ params, request, response, session }) {
+    const size = await Size.findBy('slug',params.id)
+    console.log(size)
+    // size.fill(request.only(['name']))
+    // session.flash({ notification: 'Se ha editado el tamaño' })
+    // return response.route('size.index')
   }
 
   /**
@@ -86,7 +108,11 @@ class SizeController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {
+  async destroy ({ params, request, response,session }) {
+    const size = await Size.findBy('slug',params.id)
+    await size.delete()
+    session.flash({ notification: 'Se ha eliminado el tamaño' })
+    return response.route('size.index')
   }
 }
 

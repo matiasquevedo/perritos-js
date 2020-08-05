@@ -19,8 +19,8 @@ class HostelType extends Model {
 	    })
   	}
 
-  	Hostels () {
-  	  return this.belongsTo('App/Models/Hostel')
+  	hostels () {
+  	  return this.belongsTo('App/Models/Hostel','type_id','id')
   	}	
 
   	

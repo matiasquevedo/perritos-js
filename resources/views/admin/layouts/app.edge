@@ -27,6 +27,11 @@
 
           {{-- content --}}
           <main class="container-fluid py-1 px-2 my-3" >
+              @if(flashMessage('notification'))
+              <div class="alert alert-info" role="alert">
+                {{flashMessage('notification')}}
+              </div>
+              @endif
               <div id='app'>
                   @!section('content')
               </div>
@@ -48,5 +53,6 @@
       })
       
   </script>
+  @!section('js')
 </body>
 </html>

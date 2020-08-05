@@ -7,6 +7,9 @@
 /**
  * Resourceful controller for interacting with sterilizations
  */
+
+const Sterilization = use('App/Models/Sterilization')
+
 class SterilizationController {
   /**
    * Show a list of all sterilizations.
@@ -18,6 +21,8 @@ class SterilizationController {
    * @param {View} ctx.view
    */
   async index ({ request, response, view }) {
+    const sterilizations = await Sterilization.all()
+    return view.render('admin.sterilization.index',{sterilizations:sterilizations.rows})
   }
 
   /**
@@ -30,6 +35,7 @@ class SterilizationController {
    * @param {View} ctx.view
    */
   async create ({ request, response, view }) {
+    return view.render('admin.sterilization.create')
   }
 
   /**
@@ -40,7 +46,10 @@ class SterilizationController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  async store ({ request, response, session }) {
+    const sterilization = await Sterilization.create(request.only(['name']))
+    session.flash({ notification: 'Se ha creado un nuevo estado de Esterilización' })
+    return response.route('sterilization.index')
   }
 
   /**
@@ -53,6 +62,10 @@ class SterilizationController {
    * @param {View} ctx.view
    */
   async show ({ params, request, response, view }) {
+    console.log(params.id)
+    const sterilization = await Sterilization.findBy('slug',params.id)
+    console.log(sterilization)
+    return view.render('admin.sterilization.show',{sterilization:sterilization})
   }
 
   /**
@@ -65,6 +78,9 @@ class SterilizationController {
    * @param {View} ctx.view
    */
   async edit ({ params, request, response, view }) {
+    const sterilization = await Sterilization.findBy('slug',params.id)
+    console.log(sterilization)
+    return view.render('admin.sterilization.edit',{sterilization:sterilization})
   }
 
   /**
@@ -86,7 +102,11 @@ class SterilizationController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {
+  async destroy ({ params, request, response, session }) {
+    const sterilization = await Sterilization.findBy('slug',params.id)
+    await sterilization.delete()
+    session.flash({ notification: 'Se ha eliminado el estado de Esterilización' })
+    return response.route('sterilization.index')
   }
 }
 

@@ -11,6 +11,28 @@
     	<li>
     	    <a href="{{route('hostel.index')}}">Refugios</a>
     	</li>
+
+        <li class="active">
+            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Mascotas</a>
+            <ul class="collapse list-unstyled" id="homeSubmenu">
+                <li>
+                    <a href="{{route('category.index')}}">Categorias</a>
+                </li>
+                <li>
+                    <a href="{{route('variety.index')}}">Variedades</a>
+                </li>
+                <li>
+                    <a href="{{route('size.index')}}">Tamaños</a>
+                </li>
+                <li>
+                    <a href="{{route('sterilization.index')}}">Esterilización</a>
+                </li>
+
+                <li>
+                    <a href="{{route('state.index')}}">Estados</a>
+                </li>
+            </ul>
+        </li>
     </ul>
 
 </nav>

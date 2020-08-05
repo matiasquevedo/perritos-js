@@ -1,0 +1,22 @@
+@layout('admin.layouts.app')
+
+@section('title')
+Nuevo Estado de Esterilización
+@endsection
+
+@section('content')
+<div class="container p-3 bg-white border rounded">
+	<h3>Nuevo Estado de Esterilización</h3>
+	<form action="{{route('sterilization.store')}}" method="POST">
+	  {{ csrfField() }}
+
+	  <div class="form-group">
+	    <label for="">Nombre</label>
+	    <input type="text" name="name" class="form-control">
+	  </div>
+
+	  <input type="submit" value="Crear" class="btn btn-primary">
+	</form>
+</div>
+@endsection
+

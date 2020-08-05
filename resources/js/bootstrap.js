@@ -6,3 +6,5 @@ try {
 } catch (e) {}
 
 window.fontawesome = require('@fortawesome/fontawesome-free');
+window.chosen = require('chosen-js');
+window.leaflet = require('leaflet');

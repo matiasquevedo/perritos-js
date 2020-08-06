@@ -14,6 +14,10 @@ class Category extends Model {
 	      disableUpdates: false
 	    })
   	}
+
+  	varieties () {
+  		this.hasMany('App/Models/Variety')
+  	}
 }
 
 module.exports = Category

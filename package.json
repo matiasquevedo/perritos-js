@@ -27,6 +27,7 @@
     "@adonisjs/auth": "^3.1.0",
     "@adonisjs/bodyparser": "^2.0.5",
     "@adonisjs/cors": "^1.0.7",
+    "@adonisjs/drive": "^1.0.4",
     "@adonisjs/fold": "^4.0.9",
     "@adonisjs/framework": "^5.0.9",
     "@adonisjs/ignitor": "^2.0.8",
@@ -37,9 +38,11 @@
     "@fortawesome/fontawesome-free": "^5.14.0",
     "adonis-acl": "^1.1.1",
     "chosen-js": "^1.8.7",
+    "jimp": "^0.14.0",
     "leaflet": "^1.6.0",
     "mysql": "^2.18.1",
-    "mysql2": "^2.1.0"
+    "mysql2": "^2.1.0",
+    "sharp": "^0.25.4"
   },
   "devDependencies": {
     "autoprefixer": "^9.4.7",

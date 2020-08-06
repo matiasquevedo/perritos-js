@@ -15,9 +15,8 @@ class RegisterController {
 
 
 		session.flash({notification: "User created succesfully"})
-		await auth.attemp(user.email,user.password)
 
-		return response.redirect('/')
+		return response.route('login')
 
 	}
 }

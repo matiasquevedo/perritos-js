@@ -1,0 +1,47 @@
+@layout('voluntary.layouts.app')
+
+@section('title')
+Mascotas del Refugio
+@endsection
+
+@section('content')
+<div class="container p-3 border rounded bg-white">
+	<h3>Mascotas
+		<a href="{{route('voluntary/pet.create')}}" ><i style="font-size: 25px !important;" class="fas fa-plus-circle"></i></a>
+	</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Mascota</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Esterilización</th>
+        <th scope="col"> Foto </th>
+        <th scope="col">Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+    	@each(pet in pets)
+    	    <tr>
+    	      <td><a href="{{route('voluntary/pet.show',{id: pet.slug})}}">{{ pet.name }}</a></td>
+              <td>{{ pet.state.name }}</td>
+              <td>{{ pet.sterilization.name }}</td>
+              <td><img src="{{ assetsUrl(pet.image) }}" width="30" alt=""></td>
+    	      <td>
+                <a href="{{route('voluntary/pet.edit',{id: pet.slug})}}" class="btn btn-warning"><span class="fas fa-wrench"></span></a>
+                <a href="{{route('voluntary.pet.delete',{id: pet.slug})}}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>    	      	
+    	      </td>
+    	    </tr>
+    	@else
+    		<tr>
+    			<td></td>
+                <td></td>
+    			<td>No hay Mascotas</td>
+                <td></td>
+                <td></td>
+    		</tr>
+    	@endeach
+      
+    </tbody>
+  </table>
+</div>
+@endsection

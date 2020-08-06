@@ -1,0 +1,217 @@
+@layout('voluntary.layouts.app')
+
+@section('title')
+Nueva Mascota
+@endsection
+
+@section('content')
+<div class="container p-3 bg-white border rounded">
+	<h3>Nueva Mascota</h3>
+	<form action="{{route('voluntary/pet.store')}}" method="POST" enctype="multipart/form-data">
+	  {{ csrfField() }}
+
+	  <div class="form-group">
+	    <label for="">Nombre</label>
+	    <input type="text" name="name" class="form-control" placeholder="Nombre">
+	  </div>
+
+	  <div class="form-group">
+	    <label for="">Edad</label>
+	    <input type="text" name="age" class="form-control" placeholder="Edad">
+	  </div>
+
+	  <div class="form-group">
+	  	<label for="description">Descripción</label>
+	  	<textarea name="description" id="" cols="30" rows="3" class="form-control" placeholder="Descripción"></textarea>
+	  </div>
+
+	  <div class="form-group">
+	  	<label for="description">Foto</label>
+	  	<input type="file" name="image" class="form-control"/>
+	  </div>
+
+	  
+
+
+	  <div class="row">
+	  	<div class="col-6">
+
+	  		<div class="form-group">
+	  		  <label for="type">Estado</label>
+	  		  <select name="state_id" id="" class="form-control select-category">
+	  		    <option value="" selected disabled>Seleccione un Estado</option>
+	  		    @each(state in states)
+	  		        <option value="{{state.id}}">{{state.name}}</option>
+	  		    @else
+	  		      <option value="" selected disabled>No hay Estados</option>
+	  		    @endeach
+	  		  </select>
+	  		</div>
+
+	  		<div class="form-group">
+	  		  <label for="type">Esterilización</label>
+	  		  <select name="sterilization_id" id="" class="form-control select-category">
+	  		    <option value="" selected disabled>Seleccione un estado de esterilización</option>
+	  		    @each(sterilization in sterilizations)
+	  		        <option value="{{sterilization.id}}">{{sterilization.name}}</option>
+	  		    @else
+	  		      <option value="" selected disabled>No hay estados de esterilización</option>
+	  		    @endeach
+	  		  </select>
+	  		</div>
+
+	  		<div class="form-group">
+	  		  <label for="type">Sexo</label>
+	  		  <select name="gender" id="" class="form-control select-category">
+	  		    <option value="" selected disabled>Seleccione una categoria</option>
+	  		    <option value="male">Macho</option>
+	  		    <option value="female">Hembra</option>
+	  		  </select>
+	  		</div>
+
+	  	</div>
+	  	<div class="col-6">
+
+
+	  		<div class="form-group">
+	  		  <label for="type">Variedad</label>
+	  		  <select name="variety_id" id="" class="form-control select-category">
+	  		    <option value="" selected disabled>Seleccione una variedad</option>
+	  		    @each(variety in varieties)
+	  		        <option value="{{variety.id}}">{{variety.name}}</option>
+	  		    @else
+	  		      <option value="" selected disabled>No hay Variedad</option>
+	  		    @endeach
+	  		  </select>
+	  		</div>
+
+	  		<div class="form-group">
+	  		  <label for="type">Tamaño</label>
+	  		  <select name="size_id" id="" class="form-control select-category">
+	  		    <option value="" selected disabled>Seleccione Tamaño</option>
+	  		    @each(sizes in sizes)
+	  		        <option value="{{sizes.id}}">{{sizes.name}}</option>
+	  		    @else
+	  		      <option value="" selected disabled>No hay Tamaños</option>
+	  		    @endeach
+	  		  </select>
+	  		</div>
+
+	  		
+
+
+	  	</div>
+	  </div>
+
+	  <hr>
+
+	  <h5>Ubicación</h5>
+
+	  <div class="form-group d-none">
+	    <input type="text" name="locality" class="form-control" id="local">
+	    <input type="text" name="subAdministrativeArea" class="form-control" id="area">
+	    <input type="text" name="latitude" class="form-control" id="latitude">
+	    <input type="text" name="longitude" class="form-control" id="longitude">
+	  </div>
+
+	  <div class="form-group">
+	    <label for="adress">Dirección</label>
+	    <p><i>El sistema suguiere una dirección, verifíquela...</i></p>     
+	    <input type="text" name="adress" class="form-control" id="direccion" placeholder="Dirección Sugerida">
+	  </div>
+
+	  <div class="my-3">      
+	    <div id="map" style="width: full; height: 300px;">
+	  </div>
+	  
+		<div class="form-group mt-3">			
+	  		<input type="submit" value="Crear" class="btn btn-primary">
+		</div>
+	</form>
+</div>
+
+@endsection
+
+@section('js')
+<script type="text/javascript">
+  window.addEventListener('load', function() {
+    $('.select-category').chosen({
+      placeholder_text_multiple:'Seleccione al menos 3 tags',
+      no_results_text: "Oops, no hay tipo de refugio parecido a ",
+      search_contains:true,
+
+    });
+
+    var mymap = L.map('map').setView([-34.618669,-68.339767], 13);
+    // mymap.addControl(new L.Control.Fullscreen());
+    var address;
+
+
+    /* USANDO MAPBOX*/
+    
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 25,
+        id: 'mapbox.streets',
+        accessToken: 'pk.eyJ1IjoibWF0aWFzcXVldmVkbyIsImEiOiJjazFwaW5kMHAwMWx3M2NrNDhrOXFkeTg0In0.6iha-fBESxiMBBV_mnPnOg'
+    }).addTo(mymap);
+    // var geocoder = L.Control.geocoder().addTo(mymap);
+
+
+
+    /*  USANDO OPENSTREETMAP        
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(mymap);
+    /* */
+
+    mymap.on('click', onMapClick);
+    var popup = L.popup();
+    var marker = L.marker();
+
+
+
+    var circle = L.circle([-34.618669, -68.339767], {
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.1,
+        radius: 50
+    }).addTo(mymap);
+    var polygon = L.polygon([
+        [-34.618669, -68.339767],
+        [-34.618669, -68.339767],
+        [-34.618669, -68.339767]
+    ]).addTo(mymap);
+
+    function onMapClick(e) {
+        lat=e.latlng['lat'];
+        long=e.latlng['lng'];
+        marker.setLatLng(e.latlng).addTo(mymap);
+        popup.setLatLng(e.latlng).setContent("Agregar refugio en: " + e.latlng.toString());
+        marker.bindPopup(popup).openPopup();
+        console.clear();
+        console.log(lat,long);
+        $('#latitude').val(lat);
+        $('#longitude').val(long);
+        $.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+lat+'&lon='+long, function(data){
+            address = data
+            console.log(data);
+            if(address.address.house_number){
+                $('#direccion').val(address.address.road + ' ' + address.address.house_number);
+            }else{
+                $('#direccion').val(address.address.road + ' /(Sin Número)');
+            }
+            
+            if(address.address.city){
+                $('#local').val(address.address.city);
+            }
+            $('#area').val(address.address.city);   
+        });
+        
+
+    }  
+      
+
+  })
+</script>
+@endsection

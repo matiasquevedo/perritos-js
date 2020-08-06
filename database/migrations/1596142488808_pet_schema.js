@@ -15,10 +15,12 @@ class PetSchema extends Schema {
       table.string('latitude').nullable()
       table.string('longitude').nullable()
       table.string('locality').nullable()
+      table.string('image').nullable()
+      table.string('thumb').nullable()
       table.string('subAdministrativeArea').nullable()
       table.text('description').notNullable()
 
-      table.integer('user_id').unsigned().references('id').inTable('users')
+      table.integer('hostel_id').unsigned().references('id').inTable('hostels')
       table.integer('variety_id').unsigned().references('id').inTable('varieties')
       table.integer('state_id').unsigned().references('id').inTable('states')
       table.integer('size_id').unsigned().references('id').inTable('sizes')

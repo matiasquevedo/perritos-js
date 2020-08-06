@@ -16,20 +16,25 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.on('/').render('welcome')
+// Route.on('/').render('welcome')
+Route.on('/casos-de-uso').render('doc.casodeuso').as('casos')
+Route.on('/diagrama-de-clases').render('doc.clases').as('clases')
+
+Route.get('/', 'HomeController.welcome').as('welcome')
 Route.get('agregar-refugio', 'Voluntary/HostelController.createHostel').as('nuevo.refugio').middleware(['auth'])
 Route.post('agregar-refugio', 'Voluntary/HostelController.storeHostel').as('store.refugio').middleware(['auth'])
 
-
+Route.group(() => {
 Route.get('login', 'Auth/LoginController.showLoginForm').as('loginForm')
 Route.post('login', 'Auth/LoginController.login').as('login')
-Route.get('logout', 'Auth/LoginController.loguout').as('logout')
 Route.get('register','Auth/RegisterController.showRegisterForm').as('registerFrom')
 Route.post('register','Auth/RegisterController.register').as('register')
+}).middleware(['guest'])
 
+Route.get('logout', 'Auth/LoginController.loguout').as('logout')
 // Route.resource('hostel', 'HostelController')
 
-Route.get('/home', 'HomeController.index').as('home')
+Route.get('/home', 'HomeController.index').as('home').middleware(['auth'])
 
 
 Route.group(() => {
@@ -52,7 +57,18 @@ Route.group(() => {
 	Route.resource('state','StateController')
 	Route.get('state/delete/:id', 'StateController.destroy').as('state.delete')
 
+	Route.resource('pet','PetController')
+	Route.get('pet/delete/:id', 'PetController.destroy').as('pet.delete')
+
 }).prefix('admin').middleware(['auth','is:(administrador)'])
+
+Route.group(() => {
+	Route.on('/').render('voluntary/index')
+
+	Route.resource('voluntary/pet','Voluntary/PetController')
+	Route.get('pet/delete/:id', 'Voluntary/PetController.destroy').as('voluntary.pet.delete')
+
+}).prefix('voluntary').middleware(['auth','is:(voluntario)'])
 
 
 // Route.post('login', 'UserController.login')

@@ -1,0 +1,41 @@
+@layout('admin.layouts.app')
+
+@section('title')
+Mascotas
+@endsection
+
+@section('content')
+<div class="container p-3 bg-white border rounded">
+	<h3>Mascotas
+		<a class="btn btn-primary" href="{{route('pet.create')}}" >Nuevo</a>
+	</h3>
+	
+
+	<table class="table table-striped">
+	  <thead>
+	    <tr>
+	      <th scope="col">Categoria</th>
+	      <th scope="col"> Acción</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	  	@each(pet in pets)
+	  	    <tr>
+	  	      <td><a href="{{route('pet.show',{id: pet.slug})}}">{{ pet.name }}</a></td>
+	  	      <td>
+	  	      	<a href="{{route('pet.delete',{id: pet.slug})}}">Eliminar</a>
+	  	      	<a href="{{route('pet.edit',{id: pet.slug})}}">Editar</a>
+	  	      	<img src="{{ assetsUrl(pet.image) }}" width="200" alt="">
+	  	      </td>
+	  	    </tr>
+	  	@else
+	  		<tr>
+	  			<td>No hay Mascotas</td>
+	  			<td></td>
+	  		</tr>
+	  	@endeach
+	    
+	  </tbody>
+	</table>
+</div>
+@endsection

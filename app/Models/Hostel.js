@@ -4,14 +4,7 @@
 const Model = use('Model')
 
 class Hostel extends Model {
-	static get hidden () {
-	    return []
-  	}
-
-  	static get visible () {
-    	return ['name','email','description','slug','adress','latitude','longitude','locality','subAdministrativeArea']
-  	}
-
+	
   	static boot () {
 	    super.boot()
 
@@ -23,11 +16,15 @@ class Hostel extends Model {
   	}
 
   	user () {
-    	return this.belongsTo('App/Models/User')
+    	return this.belongsTo('App/Models/User','user_id','id')
   	}
 
     type () {
       return this.hasMany('App/Models/HostelType','type_id','id')
+    }
+
+    pets () {
+      return this.hasMany('App/Models/Pet')
     }		
 }
 

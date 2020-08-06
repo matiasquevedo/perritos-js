@@ -13,6 +13,14 @@ class Variety extends Model {
 	      disableUpdates: false
 	    })
   	}
+
+  	pets () {
+  	  return this.hasMany('App/Models/Pet')
+  	}
+
+  	category () {
+  		this.belongsTo('App/Models/Category')
+  	}	
 }
 
 module.exports = Variety

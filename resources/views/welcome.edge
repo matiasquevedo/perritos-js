@@ -13,11 +13,50 @@ Home
       @is('administrador')
         <h2>Administrador</h2>
       @endis
-    <a href="{{route('nuevo.refugio')}}" class="btn btn-info">Registrar un Refugio</a>  
+
+      @is('voluntario')
+        <h2>Voluntario</h2>
+      @else
+        <a href="{{route('nuevo.refugio')}}" class="btn btn-info">Registrar un Refugio</a>  
+      @endis
   @else
     <p> Please login </p>
   	<a href="{{route('loginForm')}}" class="btn btn-info">Iniciar Sesion</a>
   	<a href="{{route('registerFrom')}}" class="btn btn-danger">Registro</a>
   @endloggedIn
+  <div>      
+
+      <div class="container mt-3">
+        <div class="row">
+          @each(pet in pets)
+            <div class="col-lg-4 col-md-4 col-sm-6 mt-3">
+              <div class="card" style="width: 18rem;">
+                <img src="{{ assetsUrl(pet.image) }}" class="card-img-top" alt="..." style="max-height: 18rem;">
+                <div class="card-body">
+                  <div class="">
+                    <p>Edad: {{pet.age}}</p>              
+                    <h3 class="card-title d-inline">
+                      <a href="#">{{pet.name}}</a></h3>
+                    <h3 class="d-inline">
+                      @if(pet.gender == 'male')
+                        <i class="fas fa-mars" style="color: #4b9adf;"></i>
+                      @endif  
+                      @if(pet.gender == 'female')
+                        <i class="fas fa-venus" style="color: #ff3b3b;"></i>
+                      @endif
+                    </h3>
+                    <p class="card-text" style=" width:100%;overflow:hidden;white-space: nowrap;    text-overflow: ellipsis;word-wrap: break-word; ">{{pet.description}}</p>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          @else
+
+          <h3>No hay mascotas</h3>
+          @endeach
+        </div>    
+      </div>
+  </div>
 </div>
 @endsection

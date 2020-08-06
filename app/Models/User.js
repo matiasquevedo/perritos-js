@@ -46,8 +46,8 @@ class User extends Model {
     return this.hasMany('App/Models/Token')
   }
 
-  Hostel () {
-    return this.hasOne('App/Models/Hostel')
+  hostel () {
+    return this.hasOne('App/Models/Hostel','id','user_id')
   }
 }
 

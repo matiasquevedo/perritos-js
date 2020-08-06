@@ -13,6 +13,10 @@ class Sterilization extends Model {
 	      disableUpdates: false
 	    })
   	}
+
+  	pets () {
+  	  return this.hasMany('App/Models/Pet')
+  	}	
 }
 
 module.exports = Sterilization

@@ -14,6 +14,10 @@ class State extends Model {
 	      disableUpdates: false
 	    })
   	}
+
+  	pets () {
+  	  return this.hasMany('App/Models/Pet')
+  	}	
 }
 
 module.exports = State

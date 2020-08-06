@@ -25,7 +25,9 @@ class Hostel extends Model {
 
     pets () {
       return this.hasMany('App/Models/Pet')
-    }		
+    }
+
+    
 }
 
 module.exports = Hostel

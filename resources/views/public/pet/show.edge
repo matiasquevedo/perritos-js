@@ -1,0 +1,99 @@
+@layout('layouts.app')
+
+@section('title')
+{{pet.name}}
+@endsection
+
+@section('content')
+<div class="container mb-5">
+  <nav aria-label="breadcrumb bg-white">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{route('public.hostel',{id:hostel.slug})}}">{{hostel.name}}</a></li>
+      <li class="breadcrumb-item"><a href="">{{category.name}}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{variety.name}}</li>
+    </ol>
+  </nav>
+  <div class="row">
+    <div class="col-6">
+      <div>
+        <h1 class="d-inline">{{pet.name}}</h1>
+
+        <h2 class="d-inline">
+          @if(pet.gender == 'male')
+            <i class="fas fa-mars" style="color: #4b9adf;"></i>
+          @endif  
+          @if(pet.gender == 'female')
+            <i class="fas fa-venus" style="color: #ff3b3b;"></i>
+          @endif
+        </h2>
+      </div>
+
+      <div class="text-left" style="word-wrap: break-word;">
+        {{ pet.description }}
+      </div>
+
+      <div class="border rounded p-2 mt-5">
+        <p>Especie: {{variety.name}}</p>
+        <p>Tamaño: {{size.name}}</p>
+        <p>Esterilización: {{sterilization.name}}</p>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="mt-5">        
+        <img src="{{ assetsUrl(pet.image) }}" class="card-img-top" alt="..." >
+      </div>
+    </div>
+  </div>
+
+  <div class="my-5">    
+    <div id="map" style="width: full; height: 150px;">
+  </div>
+
+  
+  
+  
+</div>
+@endsection
+
+@section('js')
+<script>
+  window.addEventListener('load', function() {
+    var mymap = L.map('map').setView([{{pet.latitude}},{{pet.longitude}}], 17);
+    var address;
+
+    /* USANDO MAPBOX*/
+    
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 25,
+      id: 'mapbox.streets',
+      accessToken: 'pk.eyJ1IjoibWF0aWFzcXVldmVkbyIsImEiOiJjazFwaW5kMHAwMWx3M2NrNDhrOXFkeTg0In0.6iha-fBESxiMBBV_mnPnOg'
+    }).addTo(mymap);
+
+
+
+    /*  USANDO OPENSTREETMAP    
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(mymap);
+    /* */
+    var popup = L.popup();
+    var marker = L.marker();
+
+
+
+    var circle = L.circle([{{pet.latitude}},{{pet.longitude}}], {
+      color: '#207ac9',
+      fillColor: '#207ac9',
+      fillOpacity: 0.4,
+      radius: 20
+    }).addTo(mymap);
+    marker.setLatLng([{{pet.latitude}},{{pet.longitude}}]).addTo(mymap);
+    popup.setLatLng([{{pet.latitude}},{{pet.longitude}}]).setContent('<b>{{pet.name}}</b> <br> {{pet.adress}}');
+    marker.bindPopup(popup).openPopup();
+  })
+  
+
+
+</script>
+@endsection

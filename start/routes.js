@@ -35,6 +35,8 @@ Route.get('logout', 'Auth/LoginController.loguout').as('logout')
 // Route.resource('hostel', 'HostelController')
 
 Route.get('/home', 'HomeController.index').as('home').middleware(['auth'])
+Route.get('pet/:id', 'HomeController.publicPet').as('public.pet')
+Route.get('hostel/:id', 'HomeController.publicHostel').as('public.hostel')
 
 
 Route.group(() => {

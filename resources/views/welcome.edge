@@ -36,7 +36,7 @@ Home
                   <div class="">
                     <p>Edad: {{pet.age}}</p>              
                     <h3 class="card-title d-inline">
-                      <a href="#">{{pet.name}}</a></h3>
+                      <a href="{{route('public.pet',{id: pet.slug})}}">{{pet.name}}</a></h3>
                     <h3 class="d-inline">
                       @if(pet.gender == 'male')
                         <i class="fas fa-mars" style="color: #4b9adf;"></i>

@@ -16,7 +16,7 @@ class Category extends Model {
   	}
 
   	varieties () {
-  		this.hasMany('App/Models/Variety')
+  	  return this.hasMany('App/Models/Variety')
   	}
 }
 

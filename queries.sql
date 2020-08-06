@@ -7,7 +7,6 @@ select * from adonis_schema;
 select * from users;
 select * from roles;
 select * from role_user;
-select * from bidders;
 select * from categories;
 select * from varieties;
 select * from pets;

@@ -1,0 +1,46 @@
+@layout('layouts.app')
+
+@section('title')
+{{hostel.name}}
+@endsection
+
+@section('content')
+<div class="container">
+  <h1>{{hostel.name}}</h1>
+  <div class="text-left" style="word-wrap: break-word;">
+    {{ hostel.description }}
+  </div>
+  <div class="container mt-3">
+    <div class="row">
+      @each(pet in pets)
+        <div class="col-lg-4 col-md-4 col-sm-6 mt-3">
+          <div class="card" style="width: 18rem;">
+            <img src="{{ assetsUrl(pet.image) }}" class="card-img-top" alt="..." style="max-height: 18rem;">
+            <div class="card-body">
+              <div class="">
+                <p>Edad: {{pet.age}}</p>              
+                <h3 class="card-title d-inline">
+                  <a href="{{route('public.pet',{id: pet.slug})}}">{{pet.name}}</a></h3>
+                <h3 class="d-inline">
+                  @if(pet.gender == 'male')
+                    <i class="fas fa-mars" style="color: #4b9adf;"></i>
+                  @endif  
+                  @if(pet.gender == 'female')
+                    <i class="fas fa-venus" style="color: #ff3b3b;"></i>
+                  @endif
+                </h3>
+                <p class="card-text" style=" width:100%;overflow:hidden;white-space: nowrap;    text-overflow: ellipsis;word-wrap: break-word; ">{{pet.description}}</p>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      @else
+
+      <h3>No hay mascotas</h3>
+      @endeach
+    </div>    
+  </div>
+  
+</div>
+@endsection

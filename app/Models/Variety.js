@@ -18,9 +18,9 @@ class Variety extends Model {
   	  return this.hasMany('App/Models/Pet')
   	}
 
-  	category () {
-  		this.belongsTo('App/Models/Category')
-  	}	
+    category () {
+      return this.belongsTo('App/Models/Category')
+    }
 }
 
 module.exports = Variety

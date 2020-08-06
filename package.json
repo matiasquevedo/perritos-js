@@ -58,5 +58,8 @@
   },
   "autoload": {
     "App": "./app"
+  },
+  "engines": {
+    "node": "14.7.0"
   }
 }
